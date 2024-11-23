@@ -50,8 +50,6 @@ app.get('/emoji/:emoji', async (c: Context) => {
   const extension = emoji.split('.').pop();
   emoji = emoji.split('.')[0]; // Remove extension
 
-  console.log(emoji);
-
   if (extension !== 'png' && extension !== 'svg') {
     c.status(400);
     return c.text('Invalid extension');
@@ -74,6 +72,28 @@ app.get('/emoji/:emoji', async (c: Context) => {
 
   const parsed = parse(emoji);
   return fetch(`${baseUrl}${parsed}.${extension}`);
+});
+
+app.get('/api/emoji/:emoji', async (c: Context) => {
+  const format = c.req.query('format') || '';
+  const emoji: string = c.req.param('emoji').split('.')[0];
+
+  let items = {};
+
+  if (format === 'png' || format === '') {
+    items = {
+      png: `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/72x72/${parse(emoji)}.png`,
+    };
+  }
+
+  if (format === 'svg' || format === '') {
+    items = {
+      ...items,
+      svg: `https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/${parse(emoji)}.svg`,
+    };
+  }
+
+  return c.json(items);
 });
 
 export default app;
