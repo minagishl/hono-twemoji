@@ -50,6 +50,11 @@ app.get('/emoji/:emoji', async (c: Context) => {
   const extension = emoji.split('.').pop();
   emoji = emoji.split('.')[0]; // Remove extension
 
+  if (!emoji) {
+    c.status(400);
+    return c.text('Invalid emoji');
+  }
+
   if (extension !== 'png' && extension !== 'svg') {
     c.status(400);
     return c.text('Invalid extension');
@@ -77,6 +82,11 @@ app.get('/emoji/:emoji', async (c: Context) => {
 app.get('/api/emoji/:emoji', async (c: Context) => {
   const format = c.req.query('format') || '';
   const emoji: string = c.req.param('emoji').split('.')[0];
+
+  if (!emoji) {
+    c.status(400);
+    return c.text('Invalid emoji');
+  }
 
   let items = {};
 
