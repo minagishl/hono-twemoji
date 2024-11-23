@@ -1,0 +1,23 @@
+{
+  "name": "hono-twemoji",
+  "scripts": {
+    "build": "wrangler deploy src/index.ts --dry-run --minify --outdir=dist && node scripts/build.mjs",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "deploy": "wrangler deploy --minify",
+    "dev": "wrangler dev",
+    "check": "biome check ./src",
+    "check:write": "biome check --write ./src",
+    "format": "biome format ./src",
+    "format:write": "biome format --write ./src",
+    "lint": "biome lint ./src"
+  },
+  "dependencies": {
+    "hono": "^4.6.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.3",
+    "@cloudflare/workers-types": "^4.20241004.0",
+    "esbuild": "^0.24.0",
+    "wrangler": "^3.80.4"
+  }
+}
